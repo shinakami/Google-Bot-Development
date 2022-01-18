@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import driver
 from selenium import webdriver
 from time import sleep
 import random as rd
@@ -14,6 +15,7 @@ import requests
 import loguru
 import pyquery
 from tqdm import tqdm
+import random
 os.system('cls')
 
 def SSLIPcatcher():
@@ -198,20 +200,12 @@ def SLLIPDataManager(ActIps):
 
 ActIps = SSLIPcatcher()
 SLLIPDataManager(ActIps)
+driver_root = []
 
+for op in ops:
+    driver_f = webdriver.Chrome(executable_path='chromedriver', chrome_options=op)
+    driver_root.append(driver_f)
 
-driver1 = webdriver.Chrome(executable_path='chromedriver', chrome_options=ops[0])
-os.system('cls')
-driver2 = webdriver.Chrome(executable_path='chromedriver', chrome_options=ops[1])
-os.system('cls')
-driver3 = webdriver.Chrome(executable_path='chromedriver', chrome_options=ops[2])
-os.system('cls')
-driver4 = webdriver.Chrome(executable_path='chromedriver', chrome_options=ops[3])
-os.system('cls')
-driver5 = webdriver.Chrome(executable_path='chromedriver', chrome_options=ops[4])
-os.system('cls')
-driver_root = [driver1, driver2, driver3, driver4, driver5]
-os.system('cls')
 net_root1 = ['https://www.youtube.com/watch?v=VwWgU6JHuvQ', 'https://www.youtube.com/watch?v=BC2Ulz7896Y'
             ,'https://www.youtube.com/watch?v=aNo-jPjH5V8', 'https://www.youtube.com/watch?v=v-hKahoiBV0'
             ,'https://www.youtube.com/watch?v=Ha5g9H4nu6I', 'https://www.youtube.com/watch?v=47xFYqCndLc'
@@ -232,21 +226,14 @@ while True :
     time_sleep = time_sleep + 1
     time = 360
     net_root = net[nt]
-    ch = rd.randint(0, len(net_root)-1)
-    ch2 = rd.randint(0, len(net_root)-1)
-    ch3 = rd.randint(0, len(net_root)-1)
-    ch4 = rd.randint(0, len(net_root)-1)
-    ch5 = rd.randint(0, len(net_root)-1)
-    while(ch == ch2 or ch == ch3 or ch==ch4 or ch==ch5 or ch2==ch3 or ch2==ch4 or ch2==ch5 or ch3==ch4 or ch3==ch5 or ch4==ch5):
-        ch = rd.randint(0, len(net_root)-1)
-        ch2 = rd.randint(0, len(net_root)-1)
-        ch3 = rd.randint(0, len(net_root)-1)
-        ch4 = rd.randint(0, len(net_root)-1)
-        ch5 = rd.randint(0, len(net_root)-1)
-    ch_root = [ch, ch2, ch3, ch4, ch5]
+   
+
+    ChList = random.sample(range(0, len(net_root)-1), 5)
+    ch_root = ChList
  
     print('delay_time:', time, 'time-step: ', time_sleep, 'net root num: ', nt)
-    print('ch1: ', ch, 'ch2: ', ch2, 'ch3: ', ch3, 'ch4: ', ch4, 'ch5: ', ch5)
+    print('ch1: ', ch_root[0], 'ch2: ', ch_root[1], 'ch3: ', ch_root[2], 'ch4: ', ch_root[3], 'ch5: ', ch_root[4])
+
     i = 0
     with tqdm(total=5) as pbar: 
         for driver_boot in driver_root:
