@@ -254,10 +254,10 @@ def Exacute(ActIps):
 
 
         time_sleep = 0
-
+        setting_timeSleep = 3
         
-        while time_sleep < 3:
-            for i in range(5):    
+        while time_sleep < setting_timeSleep:
+            for i in range(len(ActIps)):    
                 print(ID[i])
                 print(ip[i])
                 sleep(1)
@@ -267,14 +267,14 @@ def Exacute(ActIps):
 
             net_root= net
 
-            ChList = random.sample(range(0, len(net_root)-1), 5)
+            ChList = random.sample(range(0, len(net_root)-1), len(ActIps))
             ch_root = ChList
         
             print('delay_time:', time, 'time-step: ', time_sleep)
-            print('ch1: ', ch_root[0], 'ch2: ', ch_root[1], 'ch3: ', ch_root[2], 'ch4: ', ch_root[3], 'ch5: ', ch_root[4])
+            
 
             i = 0
-            with tqdm(total=5) as pbar: 
+            with tqdm(total=len(ActIps)) as pbar: 
                 for driver_boot in driver_root:
                     driver_boot.get(net_root[ch_root[i]])
                     pbar.update(1)
