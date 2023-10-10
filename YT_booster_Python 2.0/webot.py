@@ -1,6 +1,6 @@
 from lib2to3.pgen2 import driver
 from selenium import webdriver
-from time import sleep
+import time
 import random as rd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.proxy import Proxy
@@ -180,9 +180,22 @@ def IPDataManager(ActIps):
 
 """
    
-ops=[]
-ip = []
-ID = []
+
+
+
+def countdown(num_of_secs):
+    while num_of_secs:
+        m, s = divmod(num_of_secs, 60)
+        min_sec_format = '{:02d}:{:02d}'.format(m, s)
+        print(min_sec_format, end='\n')
+        time.sleep(1)
+        num_of_secs -= 1
+        os.system("cls")
+
+    print('Countdown finished.')
+
+
+
 
 def SSLIPcatcher(minimum_ipcount):
     times = 0
@@ -194,98 +207,131 @@ def SSLIPcatcher(minimum_ipcount):
         proxy_ips = re.findall('\d+\.\d+\.\d+\.\d+:\d+', response.text)#「\d+」代表數字一個位數以上
         #https://ip.seeip.org/jsonip?
         for ip in proxy_ips:
+            
+            """
+            ###
+            valid_ips.append(ip) 
+            if len(valid_ips) >= minimum_ipcount:
+                break
+            ### Test code for the function
+            """
+            
             try:
-                result = requests.get('https://ip.seeip.org/jsonip?',
+                result = requests.get('https://www.youtube.com/watch?v=tfHHtMm37BI',
 			        proxies={'http': ip, 'https': ip},
 			        timeout=5)
                 loguru.logger.success(result.json() +": " + str(result.status_code))
                 valid_ips.append(ip)
+
             except:
                 loguru.logger.warning(f"{ip} invalid")
+            
+               
         times += 1
     print("Searching times :" + str(times))
     loguru.logger.success("ValidIP Collecting Completed")
     return valid_ips
 
-def SLLIPDataManager(ActIps):
+
    
 
+def Execute(ActIps, execute_time, max_step):
+    ops=[]
+    ip = []
+    ID = []
 
-    for i in range(len(ActIps)):
-        ops.append('')
-        ops[i] = webdriver.ChromeOptions()
-       
-        user = UserAgent()
-        us_a = user.chrome
-        ID.append('')
-        ip.append('')
-        ID[i] = us_a
-        IP_noot = rd.randint(0, len(ActIps)-1)
-        
-        ip[i] = ActIps[IP_noot]
-        proxy = 'https://'+ActIps[IP_noot]
-        ops[i].add_argument('user-agent='+us_a)
-        ops[i].add_argument(('–proxy-server='+proxy))
-        ops[i].add_argument("--mute-audio")
-        ops[i].add_experimental_option("excludeSwitches", ["enable-automation"])
-        ops[i].add_experimental_option('useAutomationExtension', False)
-        ops[i].add_experimental_option("prefs", {"profile.password_manager_enabled": False, "credentials_enable_service": False})
-
-
-def Exacute(ActIps):
-
+    print("Browser num: "+ str(len(ActIps)))
     while True :
 
+        print("start")
+        time.sleep(5)
+        os.system('cls')
 
-        SLLIPDataManager(ActIps)
+
+        for i in range(len(ActIps)):
+            ops.append('')
+            ops[i] = webdriver.ChromeOptions()
+        
+            user = UserAgent()
+            us_a = user.chrome
+            ID.append('')
+            ip.append('')
+            ID[i] = us_a
+            IP_noot = rd.randint(0, len(ActIps)-1)
+            
+            ip[i] = ActIps[IP_noot]
+            proxy = 'https://'+ActIps[IP_noot]
+            ops[i].add_argument('user-agent='+us_a)
+            ops[i].add_argument(('–proxy-server='+proxy))
+            ops[i].add_argument("--mute-audio")
+            ops[i].add_experimental_option("excludeSwitches", ["enable-automation"])
+            ops[i].add_experimental_option('useAutomationExtension', False)
+            ops[i].add_experimental_option("prefs", {"profile.password_manager_enabled": False, "credentials_enable_service": False})
+
+        
         driver_root = []
 
         
-
         for op in ops:
             driver_f = webdriver.Chrome(executable_path='chromedriver', chrome_options=op)
             driver_root.append(driver_f)
-            
+           
 
         net = ['https://www.youtube.com/watch?v=LvkK-I4KUKI', 'https://www.youtube.com/watch?v=A1DHC3ininw'
                     ,'https://www.youtube.com/watch?v=kOz-tItDBuU', 'https://www.youtube.com/watch?v=D2mMOMbrfQQ'
                     ,'https://www.youtube.com/watch?v=yTArRtqMkMA', 'https://www.youtube.com/watch?v=xTsTMMYx8XQ'
                     ,'https://www.youtube.com/watch?v=xE6wrmIRjz0', 'https://www.youtube.com/watch?v=VwWgU6JHuvQ']
 
-
-        time_sleep = 0
-        setting_timeSleep = 3
         
-        while time_sleep < setting_timeSleep:
+
+        step = 0
+     
+
+
+
+        while step < max_step:
+            
+            step = step + 1
+            
+            
             for i in range(len(ActIps)):    
                 print(ID[i])
                 print(ip[i])
-                sleep(1)
-
-            time_sleep = time_sleep + 1
-            time = 360
+                time.sleep(1)
+            
 
             net_root= net
 
             ChList = random.sample(range(0, len(net_root)-1), len(ActIps))
             ch_root = ChList
         
-            print('delay_time:', time, 'time-step: ', time_sleep)
+            print('execute_time:', execute_time, 'time-step: ', step, 'Max-step: ', max_step)
             
 
-            i = 0
-            with tqdm(total=len(ActIps)) as pbar: 
+           
+            
+            with tqdm(total = len(ActIps)) as pbar: 
+                i = 0
                 for driver_boot in driver_root:
                     driver_boot.get(net_root[ch_root[i]])
                     pbar.update(1)
                     i = i + 1
-            with tqdm(total=time) as tbar:
-                for i in range(time):
-                    sleep(1)
-                    tbar.update(1)
             
+
+            with tqdm(total = execute_time) as tbar:
+                for i in range(execute_time):
+                    time.sleep(1)
+                    tbar.update(1)
+
+        
             for driver_boot in driver_root:
                 driver_boot.delete_all_cookies()
                 driver_boot.refresh()
+
+
+            if (step == max_step):
+                print("Sleep")
+                countdown(10) ### BOT Take a rest
             gc.collect()
-            break
+            
+            
