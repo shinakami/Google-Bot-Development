@@ -1,5 +1,7 @@
 from lib2to3.pgen2 import driver
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 import time
 import random as rd
 from selenium.webdriver.chrome.options import Options
@@ -208,7 +210,7 @@ def SSLIPcatcher(minimum_ipcount):
         #https://ip.seeip.org/jsonip?
         for ip in proxy_ips:
             
-            """
+           
             ###
             valid_ips.append(ip) 
             if len(valid_ips) >= minimum_ipcount:
@@ -226,7 +228,7 @@ def SSLIPcatcher(minimum_ipcount):
             except:
                 loguru.logger.warning(f"{ip} invalid")
             
-               
+            """
         times += 1
     print("Searching times :" + str(times))
     loguru.logger.success("ValidIP Collecting Completed")
@@ -236,7 +238,7 @@ def SSLIPcatcher(minimum_ipcount):
    
 
 def Execute(ActIps, execute_time, max_step):
-    ops=[]
+    ops = []
     ip = []
     ID = []
 
@@ -250,7 +252,7 @@ def Execute(ActIps, execute_time, max_step):
 
         for i in range(len(ActIps)):
             ops.append('')
-            ops[i] = webdriver.ChromeOptions()
+            ops[i] = Options()
         
             user = UserAgent()
             us_a = user.chrome
@@ -273,9 +275,9 @@ def Execute(ActIps, execute_time, max_step):
 
         
         for op in ops:
-            driver_f = webdriver.Chrome(executable_path='chromedriver', chrome_options=op)
+            driver_f = webdriver.Chrome(service=Service('chromedriver.exe'), options=op)
             driver_root.append(driver_f)
-           
+          
 
         net = ['https://www.youtube.com/watch?v=LvkK-I4KUKI', 'https://www.youtube.com/watch?v=A1DHC3ininw'
                     ,'https://www.youtube.com/watch?v=kOz-tItDBuU', 'https://www.youtube.com/watch?v=D2mMOMbrfQQ'
@@ -327,7 +329,6 @@ def Execute(ActIps, execute_time, max_step):
             for driver_boot in driver_root:
                 driver_boot.delete_all_cookies()
                 driver_boot.refresh()
-
 
             if (step == max_step):
                 print("Sleep")
