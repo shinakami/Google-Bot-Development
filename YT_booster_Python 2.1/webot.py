@@ -70,13 +70,13 @@ def Execute(minimum_ipcount, execute_time, execute_step):
         circle = circle + 1
 
         for i in range(len(ActIps)):
-            ops.append('')
-            ops[i] = Options()
+            ops.append(Options())
+            
         
             user = UserAgent()
             us_a = user.chrome
-            ID.append('')
-            ID[i] = us_a
+            ID.append(us_a)
+        
             
       
             proxy = 'https://'+ActIps[i]
@@ -121,7 +121,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
             ChList = random.sample(range(0, len(net)-1), len(ActIps))
             
-            random_execute_time = random.randint(execute_time-60, execute_time)
+            random_execute_time = random.randint(execute_time-60, execute_time) # 隨機設置WebDriver執行時間
 
             print('execute_time:', random_execute_time, 'Step: ', step, '/', execute_step, 'Round: ', circle)
                 
@@ -134,16 +134,17 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                     
                     
                     ###叫出視窗
+                    driver_boot.set_page_load_timeout(60) # 設置頁面載入過期時間門檻
                     driver_boot.get(net[ChList[i]])
                       
 
                     ###模擬使用者滑鼠點擊
                     action = ActionChains(driver_boot)
-                    action.move_by_offset(10, 10)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
+                    action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
                     action.click()
                     action.perform()
 
-                    ###縮小視窗
+                    ###在每一次剛重啟更新IP時縮小視窗
                     if step == 1:
                         driver_boot.minimize_window() 
 
@@ -159,6 +160,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
             for driver_boot in driver_root:
                 
+                driver_boot.delete_all_cookies()
                 driver_boot.refresh()
                 
             if step == execute_step:
@@ -166,6 +168,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                     driver_boot.quit()
                 del ops[:]
                 del ID[:]
+                del driver_root[:]
                 break
 
             gc.collect()
