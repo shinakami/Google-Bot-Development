@@ -1,22 +1,14 @@
-from lib2to3.pgen2 import driver
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.service import Service
 import time
 import random as rd
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.proxy import Proxy
-from selenium.webdriver.common.proxy import ProxyType
 from fake_useragent import UserAgent
 import os
 import re
-import pandas as pd
-import numpy as np
-from bs4 import BeautifulSoup
 import requests
 import loguru
-import pyquery
 from tqdm import tqdm
 import random
 import gc
@@ -53,6 +45,7 @@ def SSLIPcatcher(minimum_ipcount):
 
 def Execute(minimum_ipcount, execute_time, execute_step):
     circle = 0
+    
     while True :
         os.system("PYKAMIA的清除系統資料.bat")
         os.system("cls")
@@ -79,7 +72,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
         
             
       
-            proxy = 'https://'+ActIps[i]
+            proxy = 'http://'+ActIps[i]
             ops[i].add_argument('user-agent='+us_a)
             ops[i].add_argument(('–proxy-server='+proxy))
             ops[i].add_argument("--mute-audio")
@@ -93,24 +86,20 @@ def Execute(minimum_ipcount, execute_time, execute_step):
         
         for op in ops:
             driver_f = webdriver.Chrome(service=Service('chromedriver.exe'), options=op)
+            driver_f.set_page_load_timeout(execute_time) # 設置頁面載入過期時間門檻
             driver_root.append(driver_f)
           
 
-        net = ['https://www.youtube.com/watch?v=d6sxJlNxZnw', 'https://www.youtube.com/watch?v=-XBGDNXN-_M'
-                    ,'https://www.youtube.com/watch?v=Y-W7B_veFUk', 'https://www.youtube.com/watch?v=ZxxaFuDRy3c'
-                    ,'https://www.youtube.com/watch?v=yTArRtqMkMA', 'https://www.youtube.com/watch?v=xTsTMMYx8XQ'
-                    ,'https://www.youtube.com/watch?v=xE6wrmIRjz0', 'https://www.youtube.com/watch?v=1aE1yZl2-vc'
-                    ,'https://www.youtube.com/watch?v=ikx2uLfhesg', 'https://www.youtube.com/watch?v=EklnZzW6gKw'
-                    ,'https://www.youtube.com/watch?v=H1f4aAXAPFI', 'https://www.youtube.com/watch?v=KcNoBA1e3ss'
-                    ,'https://www.youtube.com/watch?v=JDzOI0uVk0A', 'https://www.youtube.com/watch?v=vTtRo-uHfbU'
-                    ,'https://www.youtube.com/watch?v=pdbMjxOZSco', 'https://www.youtube.com/watch?v=tY7ptP7ca8Q'
-                    ,'https://www.youtube.com/watch?v=KN1tB6N5tFU', 'https://www.youtube.com/watch?v=NS1H69k6s3o']
+        net = ['https://www.youtube.com/watch?v=NS1H69k6s3o', 'https://www.youtube.com/watch?v=EklnZzW6gKw'
+               ,'https://www.youtube.com/watch?v=b-1SazYKinQ', 'https://www.youtube.com/watch?v=C_yt6C1v3lg'
+               ,'https://www.youtube.com/watch?v=DOjldFfq-1I', 'https://www.youtube.com/watch?v=z8HgH_ewE0Q'
+               ,'https://www.youtube.com/watch?v=Y-W7B_veFUk', 'https://www.youtube.com/watch?v=BmXweHW6V3g']
 
         
         step = 0
         
         while True:    
-            
+
             for i in range(len(ActIps)):
                 loguru.logger.debug(ID[i] + '/' +ActIps[i])    
                 print(ops[i])
@@ -132,9 +121,9 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                 i = 0
                 for driver_boot in driver_root:
                     
+
+                    ### 叫出視窗
                     
-                    ###叫出視窗
-                    driver_boot.set_page_load_timeout(60) # 設置頁面載入過期時間門檻
                     driver_boot.get(net[ChList[i]])
                       
 
@@ -143,10 +132,10 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                     action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
                     action.click()
                     action.perform()
+                    
 
-                    ###在每一次剛重啟更新IP時縮小視窗
-                    if step == 1:
-                        driver_boot.minimize_window() 
+                    
+                    driver_boot.minimize_window() 
 
                     pbar.update(1)
                     i = i + 1
@@ -160,7 +149,6 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
             for driver_boot in driver_root:
                 
-                driver_boot.delete_all_cookies()
                 driver_boot.refresh()
                 
             if step == execute_step:
