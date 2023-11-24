@@ -31,7 +31,7 @@ def SSLIPcatcher(minimum_ipcount):
         valid_ips.append(ip) 
         ### 
 
-    valid_ipsample = random.sample(range(0, len(valid_ips)), minimum_ipcount)        
+    valid_ipsample = random.sample(range(len(valid_ips)), minimum_ipcount)        
 
     for el in valid_ipsample:
         set_ips.append(valid_ips[el])
@@ -110,7 +110,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
             step = step + 1
 
-            ChList = random.sample(range(0, len(net)-1), len(ActIps))
+            ChList = random.sample(range(len(net)), len(ActIps))
             
             random_execute_time = random.randint(execute_time-60, execute_time) # 隨機設置WebDriver執行時間
 
