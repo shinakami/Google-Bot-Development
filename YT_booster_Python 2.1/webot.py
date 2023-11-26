@@ -45,8 +45,8 @@ def SSLIPcatcher(minimum_ipcount):
 
 def Execute(minimum_ipcount, execute_time, execute_step):
     circle = 0
-    
-    while True :
+    is_operating = True
+    while is_operating :
         os.system("PYKAMIA的清除系統資料.bat")
         os.system("cls")
         ActIps = SSLIPcatcher(minimum_ipcount)
@@ -58,7 +58,6 @@ def Execute(minimum_ipcount, execute_time, execute_step):
         print("start")
 
 
-        time.sleep(3)
         
         circle = circle + 1
 
@@ -99,68 +98,70 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
         
         step = 0
-        
-        while True:    
+        try:
+            while step != execute_step:    
 
-            for i in range(len(ActIps)):
-                loguru.logger.debug(ID[i] + '/' +ActIps[i])    
-                print(ops[i])
-                time.sleep(1)
-                
-
-            step = step + 1
-
-            ChList = random.sample(range(len(net)), len(ActIps))
-            
-            random_execute_time = random.randint(execute_time-60, execute_time) # 隨機設置WebDriver執行時間
-
-            print('execute_time:', random_execute_time, 'Step: ', step, '/', execute_step, 'Round: ', circle)
-                
-
-            
-                
-            with tqdm(total = len(ActIps)) as pbar: 
-                i = 0
-                for driver_boot in driver_root:
-                    
-
-                    ### 叫出視窗
-                    
-                    driver_boot.get(net[ChList[i]])
-                      
-
-                    ###模擬使用者滑鼠點擊
-                    action = ActionChains(driver_boot)
-                    action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
-                    action.click()
-                    action.perform()
-                    
-
-                    
-                    driver_boot.minimize_window() 
-
-                    pbar.update(1)
-                    i = i + 1
-                
-
-            with tqdm(total = random_execute_time) as tbar:
-                for i in range(random_execute_time):
+                for i in range(len(ActIps)):
+                    loguru.logger.debug(ID[i] + '/' +ActIps[i])    
+                    print(ops[i])
                     time.sleep(1)
-                    tbar.update(1)
+                    
+
+                step = step + 1
+
+                ChList = random.sample(range(len(net)), len(ActIps))
+                
+                random_execute_time = random.randint(execute_time-60, execute_time) # 隨機設置WebDriver執行時間
+
+                print('execute_time:', random_execute_time, 'Step: ', step, '/', execute_step, 'Round: ', circle)
+                    
+
+                
+                    
+                with tqdm(total = len(ActIps)) as pbar: 
+                    i = 0
+                    for driver_boot in driver_root:
+                        
+
+                        ### 叫出視窗
+                        
+                        driver_boot.get(net[ChList[i]])
+                        
+
+                        ###模擬使用者滑鼠點擊
+                        action = ActionChains(driver_boot)
+                        action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
+                        action.click()
+                        action.perform()
+                        
+
+                        
+                        driver_boot.minimize_window() 
+
+                        pbar.update(1)
+                        i = i + 1
+                    
+
+                with tqdm(total = random_execute_time) as tbar:
+                    for i in range(random_execute_time):
+                        time.sleep(1)
+                        tbar.update(1)
 
 
-            for driver_boot in driver_root:
-                
-                driver_boot.refresh()
-                
-            if step == execute_step:
                 for driver_boot in driver_root:
-                    driver_boot.quit()
-                del ops[:]
-                del ID[:]
-                del driver_root[:]
-                break
+                    
+                    driver_boot.refresh()
+                    
+                if step == execute_step:
+                    for driver_boot in driver_root:
+                        driver_boot.quit()
+                    del ops[:]
+                    del ID[:]
+                    del driver_root[:]
+                    
 
-            gc.collect()
+                gc.collect()
             
-            
+        except KeyboardInterrupt:
+            loguru.logger.warning("YT Viewer Monitoring stopped.")
+            is_operating = False
