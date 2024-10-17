@@ -65,9 +65,12 @@ def Execute(minimum_ipcount, execute_time, execute_step):
             ops.append(Options())
             
         
-            user = UserAgent()
-            us_a = user.chrome
-            ID.append(us_a)
+            while len(ID) < len(ActIps):
+                user = UserAgent()
+                us_a = user.chrome
+                if 'Windows' in us_a or 'Macintosh' in us_a:
+                    print("Only Windows & Macintosh")
+                    ID.append(us_a)
         
             
       
@@ -89,12 +92,12 @@ def Execute(minimum_ipcount, execute_time, execute_step):
             driver_root.append(driver_f)
           
 
-        net = ['https://www.youtube.com/watch?v=NS1H69k6s3o', 'https://www.youtube.com/watch?v=EklnZzW6gKw'
-               ,'https://www.youtube.com/watch?v=b-1SazYKinQ', 'https://www.youtube.com/watch?v=C_yt6C1v3lg'
-               ,'https://www.youtube.com/watch?v=DOjldFfq-1I', 'https://www.youtube.com/watch?v=z8HgH_ewE0Q'
-               ,'https://www.youtube.com/watch?v=Y-W7B_veFUk', 'https://www.youtube.com/watch?v=BmXweHW6V3g'               
-               ,'https://www.youtube.com/watch?v=Ae_mJo4fntg', 'https://www.youtube.com/watch?v=kMvkX6l5EcI'
-               ,'https://www.youtube.com/watch?v=rsbJlhUYMcQ', 'https://www.youtube.com/watch?v=IAdx8NIQB1k']
+        net = ['https://www.youtube.com/watch?v=muNCt2rkH3w', 'https://www.youtube.com/watch?v=vn-ze9UZX2c'
+               ,'https://www.youtube.com/watch?v=13Y7JvsgplI', 'https://www.youtube.com/watch?v=iXbBTLAZ4jY'
+               ,'https://www.youtube.com/watch?v=yc7Li_LLofk', 'https://www.youtube.com/watch?v=Qdt37PmrBdY'
+               ,'https://www.youtube.com/watch?v=-2xVWMFF3dY', 'https://www.youtube.com/watch?v=jH9MRpaJIn8'
+               ,'https://www.youtube.com/watch?v=q018elKqDws', 'https://www.youtube.com/watch?v=YmlyE94vYqU'
+               ,'https://www.youtube.com/watch?v=orXrSx5L0k4', 'https://www.youtube.com/watch?v=sy95ABSMnPE']
 
         
         step = 0
@@ -109,7 +112,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
 
                 step = step + 1
 
-                ChList = random.sample(range(len(net)), len(ActIps))
+                ChList = random.sample(range(len(net)), len(ActIps)) #根據IP的數目挑選不重複的頻道位置
                 
                 random_execute_time = random.randint(execute_time-60, execute_time) # 隨機設置WebDriver執行時間
 
@@ -141,7 +144,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                         pbar.update(1)
                         i = i + 1
                     
-
+                ###維持Google瀏覽器開啟的時間(random_execute_time)
                 with tqdm(total = random_execute_time) as tbar:
                     for i in range(random_execute_time):
                         time.sleep(1)
@@ -151,6 +154,8 @@ def Execute(minimum_ipcount, execute_time, execute_step):
                 for driver_boot in driver_root:
                     
                     driver_boot.refresh()
+                    driver_boot.delete_all_cookies()
+
                     
                 if step == execute_step:
                     for driver_boot in driver_root:
