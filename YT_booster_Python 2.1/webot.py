@@ -12,7 +12,7 @@ import loguru
 from tqdm import tqdm
 import random
 import gc
-
+import sys
 
 
 def SSLIPcatcher(minimum_ipcount):
@@ -43,7 +43,7 @@ def SSLIPcatcher(minimum_ipcount):
 
    
 
-def Execute(minimum_ipcount, execute_time, execute_step):
+def Execute(minimum_ipcount, execute_time, execute_step, address):
     circle = 0
     is_operating = True
     while is_operating :
@@ -82,6 +82,10 @@ def Execute(minimum_ipcount, execute_time, execute_step):
             ops[i].add_experimental_option('useAutomationExtension', False)
             ops[i].add_experimental_option("prefs", {"profile.password_manager_enabled": False, "credentials_enable_service": False})
 
+        net = address
+        if len(net) < minimum_ipcount:
+            loguru.logger.warning("address array is too short")
+            sys.exit("程序已被強制停止")
         
         driver_root = []
 
@@ -90,14 +94,7 @@ def Execute(minimum_ipcount, execute_time, execute_step):
             driver_f = webdriver.Chrome(service=Service('chromedriver.exe'), options=op)
             driver_f.set_page_load_timeout(execute_time) # 設置頁面載入過期時間門檻
             driver_root.append(driver_f)
-          
 
-        net = ['https://www.youtube.com/watch?v=muNCt2rkH3w', 'https://www.youtube.com/watch?v=vn-ze9UZX2c'
-               ,'https://www.youtube.com/watch?v=13Y7JvsgplI', 'https://www.youtube.com/watch?v=iXbBTLAZ4jY'
-               ,'https://www.youtube.com/watch?v=yc7Li_LLofk', 'https://www.youtube.com/watch?v=Qdt37PmrBdY'
-               ,'https://www.youtube.com/watch?v=-2xVWMFF3dY', 'https://www.youtube.com/watch?v=jH9MRpaJIn8'
-               ,'https://www.youtube.com/watch?v=q018elKqDws', 'https://www.youtube.com/watch?v=YmlyE94vYqU'
-               ,'https://www.youtube.com/watch?v=orXrSx5L0k4', 'https://www.youtube.com/watch?v=sy95ABSMnPE']
 
         
         step = 0
