@@ -151,7 +151,6 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
                 for driver_boot in driver_root:
                     
                     driver_boot.refresh()
-                    driver_boot.delete_all_cookies()
 
                     
                 if step == execute_step:
