@@ -53,6 +53,7 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
             ops[i].add_argument('user-agent='+us_a)
             ops[i].add_argument(('–proxy-server='+proxy))
             ops[i].add_argument("--mute-audio")
+            ops[i].add_argument("--incognito")
             ops[i].add_experimental_option("excludeSwitches", ["enable-automation"])
             ops[i].add_experimental_option('useAutomationExtension', False)
             ops[i].add_experimental_option("prefs", {"profile.password_manager_enabled": False, "credentials_enable_service": False})
@@ -105,7 +106,7 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
 
                         ###模擬使用者滑鼠點擊
                         action = ActionChains(driver_boot)
-                        action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (10, 10)）
+                        action.move_by_offset(1, 5)  # 移動到頁面的某個坐標（這裡是 (1, 5)）
                         action.click()
                         action.perform()
                         
@@ -124,10 +125,10 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
 
 
                 for driver_boot in driver_root:
-                    
+                    time.sleep(3)
                     driver_boot.refresh()
                     
-
+                             
                     
                 if step == execute_step:
                     for driver_boot in driver_root:
