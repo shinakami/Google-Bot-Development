@@ -21,12 +21,15 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
     circle = 0
     is_operating = True
     while is_operating :
-        #os.system("PYKAMIA的清除系統資料.bat")
+        os.system("PYKAMIA的清除系統資料.bat")
         os.system("cls")
-        #ActIps = SSLIPcatcher(minimum_ipcount)
         ActIps = SSLtest.SSLIPcatcher(minimum_ipcount)
         ops = []
         ID = []
+
+        if circle > 0:
+            print("Sleeping...")
+            time.sleep(1800)
 
         print("Browser num: "+ str(len(ActIps)))
 
@@ -106,7 +109,7 @@ def Execute(minimum_ipcount, execute_time, execute_step, address):
 
                         ###模擬使用者滑鼠點擊
                         action = ActionChains(driver_boot)
-                        action.move_by_offset(1, 5)  # 移動到頁面的某個坐標（這裡是 (1, 5)）
+                        action.move_by_offset(1, 1)  # 移動到頁面的某個坐標（這裡是 (1, 1)）
                         action.click()
                         action.perform()
                         
